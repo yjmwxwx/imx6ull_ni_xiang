@@ -1,0 +1,57 @@
+
+.text:803A5F08                 .globl __platform_driver_register
+.text:803A5F08 __platform_driver_register:             @ CODE XREF: __platform_driver_probe+1C↓p
+.text:803A5F08                                         @ dhd_wifi_platform_register_drv+4C↓j ...
+.text:803A5F08                 LDR             R2, [R0] @
+.text:803A5F08                                         @ r2
+.text:803A5F08                                         @ =
+.text:803A5F08                                         @ 802DDED4 imx6ul_pinctrl_probe
+.text:803A5F0C                 ADD             R0, R0, #0x14 @
+.text:803A5F0C                                         @ r0
+.text:803A5F0C                                         @ =
+.text:803A5F0C                                         @ 0x80d485fc
+.text:803A5F0C                                         @ +
+.text:803A5F0C                                         @ 0x14
+.text:803A5F0C                                         @ =
+.text:803A5F0C                                         @ 0x80d48610
+.text:803A5F10                 LDR             R3, =platform_bus_type
+.text:803A5F14                 CMP             R2, #0
+.text:803A5F18                 STR             R1, [R0,#8] @
+.text:803A5F18                                         @ 0x80d48618
+.text:803A5F18                                         @ =
+.text:803A5F18                                         @ 0
+.text:803A5F1C                 STR             R3, [R0,#4] @
+.text:803A5F1C                                         @ 0x80d48614
+.text:803A5F1C                                         @ =
+.text:803A5F1C                                         @ platform_bus_type
+.text:803A5F1C                                         @ 0x80d5e028
+.text:803A5F20                 MOVNE           R3, #0x803A5FB4
+.text:803A5F28                 STRNE           R3, [R0,#0x1C] @
+.text:803A5F28                                         @ 0x80d4862c
+.text:803A5F28                                         @ =
+.text:803A5F28                                         @ 0x803a5fb4
+.text:803A5F2C                 LDR             R3, [R0,#-0x10] @
+.text:803A5F2C                                         @ 读
+.text:803A5F2C                                         @ 0x80d48600
+.text:803A5F2C                                         @ 到
+.text:803A5F2C                                         @ R3
+.text:803A5F2C                                         @ 0x802DDE74
+.text:803A5F30                 CMP             R3, #0
+.text:803A5F34                 MOVNE           R3, #0x803A5F84
+.text:803A5F3C                 STRNE           R3, [R0,#0x20] @
+.text:803A5F3C                                         @ 写
+.text:803A5F3C                                         @ 0x803a5f84
+.text:803A5F3C                                         @ 到
+.text:803A5F3C                                         @ 0x80d48630
+.text:803A5F40                 LDR             R3, [R0,#-0xC] @
+.text:803A5F40                                         @ r3
+.text:803A5F40                                         @ =
+.text:803A5F40                                         @ 0x802DDE74
+.text:803A5F44                 CMP             R3, #0
+.text:803A5F48                 MOVNE           R3, #0x803A5F5C
+.text:803A5F50                 STRNE           R3, [R0,#0x24] @
+.text:803A5F50                                         @ 0x803a5f5c
+.text:803A5F50                                         @ 写
+.text:803A5F50                                         @ 到
+.text:803A5F50                                         @ 0x80d48634
+.text:803A5F54                 B               driver_register
