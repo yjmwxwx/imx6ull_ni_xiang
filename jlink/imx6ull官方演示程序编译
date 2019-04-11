@@ -1,0 +1,23 @@
+
+到官方网站下载SDK_2.2_MCIM6ULL_RFP_Linux.run
+打开安装到指定目录
+ 
+
+ 
+
+安装CMAKE和arm-none-eabi工具链
+
+进入官方程序演示目录
+
+cd /home/yjmwxwx/SDK_2.2_MCIM6ULL/boards/evkmcimx6ull/demo_apps/hello_world/armgcc/
+
+
+指定编译器所在目录
+
+export ARMGCC_DIR=/home/yjmwxwx/yjmwxwx/ruanjian/chengxu/arm/bianyiqi/gcc-arm-none-eabi-7-2018-q2-update
+
+运行armgcc文件夹里面的build_all.sh
+
+
+./build_all.sh
+

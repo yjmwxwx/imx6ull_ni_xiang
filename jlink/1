@@ -1,0 +1,8 @@
+setwp 0x880fc3c0
+w4 0x880fc3d0 0
+setbp 0x80cc21ec a h
+s
+s
+setpc 0x80cc242c
+setbp 0x80cf9e30 a h 
+setbp 0x803A5090  a h

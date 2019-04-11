@@ -1,0 +1,8 @@
+file zImage
+binwalk zImage
+d if=zImage skip=0 count=6420 bs=1 of=1
+
+
+
+dd if=zImage skip=6420 count=7654360 bs=1 of=2
+lzop -d -o neihe 2
