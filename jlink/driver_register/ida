@@ -1,0 +1,66 @@
+.text:803A502C                 .globl driver_register
+.text:803A502C driver_register:                        @ CODE XREF: __pci_register_driver+38↑j
+.text:803A502C                                         @ pcie_port_service_register+5C↑j ...
+.text:803A502C                 LDR             R1, [R0,#4] @
+.text:803A502C                                         @ r1
+.text:803A502C                                         @ =
+.text:803A502C                                         @ 0x80D5E028
+.text:803A5030                 LDR             R3, [R1,#0x48] @
+.text:803A5030                                         @ r3
+.text:803A5030                                         @ =
+.text:803A5030                                         @ 0x88030900
+.text:803A5034                 CMP             R3, #0
+.text:803A5038                 BEQ             loc_803A50F0
+.text:803A503C                 STMFD           SP!, {R4-R6,LR}
+.text:803A5040                 MOV             R4, R0  @
+.text:803A5040                                         @ r4
+.text:803A5040                                         @ =
+.text:803A5040                                         @ 0x80D48610
+.text:803A5044                 LDR             R3, [R1,#0x24] @
+.text:803A5044                                         @ R3 =00000000
+.text:803A5048                 CMP             R3, #0
+.text:803A504C                 BEQ             loc_803A505C
+.text:803A5050                 LDR             R3, [R0,#0x1C]
+.text:803A5054                 CMP             R3, #0
+.text:803A5058                 BNE             loc_803A50F4
+.text:803A505C
+.text:803A505C loc_803A505C:                           @ CODE XREF: driver_register+20↑j
+.text:803A505C                 LDR             R3, [R1,#0x28] @
+.text:803A505C                                         @ R3 =00000000
+.text:803A5060                 CMP             R3, #0
+.text:803A5064                 BEQ             loc_803A5074
+.text:803A5068                 LDR             R3, [R4,#0x20] @
+.text:803A5068                                         @ R3 =00000000
+.text:803A506C                 CMP             R3, #0
+.text:803A5070                 BNE             loc_803A50F4
+.text:803A5074
+.text:803A5074 loc_803A5074:                           @ CODE XREF: driver_register+38↑j
+.text:803A5074                 LDR             R3, [R1,#0x2C]
+.text:803A5078                 CMP             R3, #0
+.text:803A507C                 BEQ             loc_803A508C
+.text:803A5080                 LDR             R3, [R4,#0x24]
+.text:803A5084                 CMP             R3, #0
+.text:803A5088                 BNE             loc_803A50F4
+.text:803A508C
+.text:803A508C loc_803A508C:                           @ CODE XREF: driver_register+50↑j
+.text:803A508C                                         @ driver_register+DC↓j
+.text:803A508C                 LDR             R0, [R4] @
+.text:803A508C                                         @ r4
+.text:803A508C                                         @ =
+.text:803A508C                                         @ 0x80D48610
+.text:803A508C                                         @ r0
+.text:803A508C                                         @ =
+.text:803A508C                                         @ 0x80B9AE48
+.text:803A508C                                         @ r1
+.text:803A508C                                         @ =
+.text:803A508C                                         @ 0x80D5E028
+.text:803A508C                                         @ r2
+.text:803A508C                                         @ =
+.text:803A508C                                         @ 802DDED4
+.text:803A5090                 BL              driver_find @
+.text:803A5090                                         @ 没找到kobject返回0
+.text:803A5090                                         @ kobject = imx6ul-pinctrl
+.text:803A5094                 CMP             R0, #0
+.text:803A5098                 BNE             loc_803A510C
+.text:803A509C                 MOV             R0, R4  @
+.text:803A509C                                         @ 没找到执行bus_add_driver

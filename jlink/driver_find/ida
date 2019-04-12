@@ -1,0 +1,50 @@
+.text:803A4FFC
+.text:803A4FFC @ =============== S U B R O U T I N E =======================================
+.text:803A4FFC
+.text:803A4FFC @
+.text:803A4FFC @ 没找到kobject返回0
+.text:803A4FFC @ kobject = imx6ul-pinctrl
+.text:803A4FFC
+.text:803A4FFC                 .globl driver_find
+.text:803A4FFC driver_find:                            @ CODE XREF: driver_register+64↓p
+.text:803A4FFC                                         @ drvctl_store+84↓p
+.text:803A4FFC                                         @ DATA XREF: ...
+.text:803A4FFC                 STMFD           SP!, {R4,LR} @
+.text:803A4FFC                                         @ r1
+.text:803A4FFC                                         @ =
+.text:803A4FFC                                         @ 0x80D5E028
+.text:803A5000                 LDR             R3, [R1,#0x48] @
+.text:803A5000                                         @ r3
+.text:803A5000                                         @ =
+.text:803A5000                                         @ 0x88030900
+.text:803A5004                 MOV             R1, R0  @
+.text:803A5004                                         @ r1
+.text:803A5004                                         @ =
+.text:803A5004                                         @ 0x80B9AE48
+.text:803A5008                 LDR             R0, [R3,#0x58] @
+.text:803A5008                                         @ r0
+.text:803A5008                                         @ =
+.text:803A5008                                         @ 0x880608C0
+.text:803A500C                 BL              kset_find_obj @
+.text:803A500C                                         @ 0x880608c0里面的地址
+.text:803A500C                                         @ 进入这个地址
+.text:803A500C                                         @ 用这个地址减4地址里面的数据
+.text:803A500C                                         @ 和R1地址里面的数据比较
+.text:803A500C                                         @ 相同返回这个数据的地址
+.text:803A500C                                         @
+.text:803A500C                                         @ 寻找匹配的kobject。
+.text:803A500C                                         @ 如果找到匹配对象，
+.text:803A500C                                         @ 则获取引用并返回该对象。
+.text:803A5010                 SUBS            R4, R0, #0
+.text:803A5014                 BEQ             loc_803A5024 @
+.text:803A5014                                         @ 没找到返回0
+.text:803A5018                 BL              kobject_put
+.text:803A501C                 LDR             R0, [R4,#0x4C]
+.text:803A5020                 LDMFD           SP!, {R4,PC}
+.text:803A5024 @ ---------------------------------------------------------------------------
+.text:803A5024
+.text:803A5024 loc_803A5024:                           @ CODE XREF: driver_find+18↑j
+.text:803A5024                 MOV             R0, R4
+.text:803A5028                 LDMFD           SP!, {R4,PC}
+.text:803A5028 @ End of function driver_find
+.text:803A5028

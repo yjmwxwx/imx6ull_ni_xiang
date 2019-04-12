@@ -1,0 +1,11 @@
+第一级：
+ROM:880608C0                 .long 0x880AB084 @首地址
+第二级：
+ROM:880AB080                 .long 0x880A90C0 @当前要比较数据的地址
+ROM:880AB084 dword_880AB084: .long 0x880AB104 @指向下一个数据地址
+第三级：
+ROM:880A90C0 aCci400Pmu:     .ascii "CCI-400 PMU" 地址里面的数据
+
+就拿这个字符串和R1里面的imx6ul-pinctrl比较，相同返回这个的地址。
+
+ ROM:88101500 aImx6ulPinctrl: .ascii "imx6ul-pinctrl"

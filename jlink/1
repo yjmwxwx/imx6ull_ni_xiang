@@ -1,8 +1,21 @@
-setwp 0x880fc3c0
+setwp 0x880fc3c0 w
 w4 0x880fc3d0 0
+g
+h
+s
 setbp 0x80cc21ec a h
+g
+h
 s
 s
 setpc 0x80cc242c
-setbp 0x80cf9e30 a h 
+setbp 0x80cf9e30 a h
+g
+h
 setbp 0x803A5090  a h
+g
+h
+setbp 0x802b266c a h
+g
+h
+setbp 0x803a5010 a h
