@@ -9,3 +9,68 @@ ROM:880A90C0 aCci400Pmu:     .ascii "CCI-400 PMU" 地址里面的数据
 就拿这个字符串和R1里面的imx6ul-pinctrl比较，相同返回这个的地址。
 
  ROM:88101500 aImx6ulPinctrl: .ascii "imx6ul-pinctrl"
+
+
+
+.text:802B2654 @ ---------------------------------------------------------------------------
+.text:802B2654
+.text:802B2654                 .globl kset_find_obj
+.text:802B2654 kset_find_obj:                          @ CODE XREF: .text:80096B74↑p
+.text:802B2654                                         @ make_slot_name+5C↓p ...
+.text:802B2654                 STMFD           SP!, {R4-R8,LR} @
+.text:802B2654                                         @ r0=0x880608c0
+.text:802B2654                                         @ r1=0x80b9ae48
+.text:802B2658                 ADD             R7, R0, #8 @
+.text:802B2658                                         @ r7=0x880608c8
+.text:802B265C                 MOV             R5, R0  @
+.text:802B265C                                         @ r5=0x880608c0
+.text:802B2660                 MOV             R6, R1  @
+.text:802B2660                                         @ r6=0x80b9ae48
+.text:802B2664                 MOV             R0, R7  @
+.text:802B2664                                         @ r0=0x880608c8
+.text:802B2668                 BL              _raw_spin_lock @ 自旋锁
+.text:802B266C                 LDR             R4, [R5] @
+.text:802B266C                                         @ r4=0x880ab084
+.text:802B2670                 CMP             R5, R4
+.text:802B2674                 SUBNE           R4, R4, #4 @
+.text:802B2674                                         @ R5不等于R4
+.text:802B2674                                         @ R4减4
+.text:802B2678                 BEQ             loc_802B26A8
+.text:802B267C
+.text:802B267C loc_802B267C:                           @ CODE XREF: .text:802B26A4↓j
+.text:802B267C                 LDR             R0, [R4] @
+.text:802B267C                                         @ r4=0x880ab080
+.text:802B2680                 MOV             R1, R6  @
+.text:802B2680                                         @ r1=0x80b9ae48
+.text:802B2684                 CMP             R0, #0
+.text:802B2688                 BEQ             loc_802B2698
+.text:802B268C                 BL              strcmp  @
+.text:802B268C                                         @ 取出R0和R1地址
+.text:802B268C                                         @ 里面的8位
+.text:802B268C                                         @ 自增8位
+.text:802B268C                                         @ 比较这两个8位
+.text:802B268C                                         @ 相等则R0的八位等于0返回0，
+.text:802B268C                                         @ R0的八位不等于0自增八位继续判断
+.text:802B268C                                         @ R0里面的八位大于R1里面的八位返回1
+.text:802B268C                                         @ R0里面的八位小雨R1里面的八位返回0XFFFFFFFF
+.text:802B2690                 CMP             R0, #0  @
+.text:802B2690                                         @ strcmp 返回和0比较
+.text:802B2694                 BEQ             loc_802B26BC @
+.text:802B2694                                         @ 等于0跳转0x802b26bc
+.text:802B2698
+.text:802B2698 loc_802B2698:                           @ CODE XREF: .text:802B2688↑j
+.text:802B2698                 LDR             R4, [R4,#4]
+.text:802B269C                 CMP             R5, R4
+.text:802B26A0                 SUB             R4, R4, #4 @
+.text:802B26A0                                         @ r4是标签
+.text:802B26A0                                         @ 拿标签减4的和R1里面的数据比较
+.text:802B26A4                 BNE             loc_802B267C @
+.text:802B26A4                                         @ 减到0跳出循环
+.text:802B26A8
+.text:802B26A8 loc_802B26A8:                           @ CODE XREF: .text:802B2678↑j
+.text:802B26A8                 MOV             R4, #0
+.text:802B26AC                 MOV             R0, R7
+.text:802B26B0                 BL              _raw_spin_unlock @
+.text:802B26B0                                         @ 开锁
+.text:802B26B4                 MOV             R0, R4
+.text:802B26B8                 LDMFD           SP!, {R4-R8,PC}
