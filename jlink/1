@@ -19,3 +19,12 @@ setbp 0x802b266c a h
 g
 h
 setbp 0x803a5010 a h
+g
+h
+setbp 0x803a509c a h
+g
+h
+setbp 0x803a3f04 a h
+g
+h
+

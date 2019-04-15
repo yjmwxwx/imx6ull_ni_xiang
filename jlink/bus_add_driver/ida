@@ -1,0 +1,475 @@
+.text:803A3BA4 @ 总线
+.text:803A3BA4 @ 加
+.text:803A3BA4 @ 设备
+.text:803A3BA4
+.text:803A3BA4                 .globl bus_add_device
+.text:803A3BA4 bus_add_device:                         @ CODE XREF: device_add+30C↑p
+.text:803A3BA4                 STMFD           SP!, {R4-R8,LR}
+.text:803A3BA8                 LDR             R6, [R0,#0x4C]
+.text:803A3BAC                 CMP             R6, #0
+.text:803A3BB0                 BEQ             loc_803A3D0C
+.text:803A3BB4                 MOV             R5, R0
+.text:803A3BB8                 LDR             R0, [R6,#0x48]
+.text:803A3BBC                 CMP             R0, #0
+.text:803A3BC0                 BEQ             loc_803A3BCC
+.text:803A3BC4                 ADD             R0, R0, #0xC
+.text:803A3BC8                 BL              kobject_get
+.text:803A3BCC
+.text:803A3BCC loc_803A3BCC:                           @ CODE XREF: bus_add_device+1C↑j
+.text:803A3BCC                 LDR             R1, [R6,#0xC]
+.text:803A3BD0                 CMP             R1, #0
+.text:803A3BD4                 BEQ             loc_803A3C60
+.text:803A3BD8                 LDR             R3, [R1]
+.text:803A3BDC                 CMP             R3, #0
+.text:803A3BE0                 MOVNE           R4, #0
+.text:803A3BE4                 BNE             loc_803A3C04
+.text:803A3BE8                 B               loc_803A3C60
+.text:803A3BEC @ ---------------------------------------------------------------------------
+.text:803A3BEC
+.text:803A3BEC loc_803A3BEC:                           @ CODE XREF: bus_add_device+6C↓j
+.text:803A3BEC                 LDR             R3, [R6,#0xC]
+.text:803A3BF0                 ADD             R4, R4, #1
+.text:803A3BF4                 ADD             R1, R3, R4,LSL#4
+.text:803A3BF8                 LDR             R3, [R3,R4,LSL#4]
+.text:803A3BFC                 CMP             R3, #0
+.text:803A3C00                 BEQ             loc_803A3C60
+.text:803A3C04
+.text:803A3C04 loc_803A3C04:                           @ CODE XREF: bus_add_device+40↑j
+.text:803A3C04                 MOV             R0, R5
+.text:803A3C08                 BL              device_create_file
+.text:803A3C0C                 SUBS            R7, R0, #0
+.text:803A3C10                 BEQ             loc_803A3BEC
+.text:803A3C14                 SUBS            R4, R4, #1
+.text:803A3C18                 BMI             loc_803A3C40
+.text:803A3C1C                 MOV             R8, R4,LSL#4
+.text:803A3C20
+.text:803A3C20 loc_803A3C20:                           @ CODE XREF: bus_add_device+98↓j
+.text:803A3C20                 LDR             R1, [R6,#0xC]
+.text:803A3C24                 SUB             R4, R4, #1
+.text:803A3C28                 MOV             R0, R5
+.text:803A3C2C                 ADD             R1, R1, R8
+.text:803A3C30                 SUB             R8, R8, #0x10
+.text:803A3C34                 BL              device_remove_file
+.text:803A3C38                 CMN             R4, #1
+.text:803A3C3C                 BNE             loc_803A3C20
+.text:803A3C40
+.text:803A3C40 loc_803A3C40:                           @ CODE XREF: bus_add_device+74↑j
+.text:803A3C40                 LDR             R3, [R5,#0x4C]
+.text:803A3C44                 CMP             R3, #0
+.text:803A3C48                 BEQ             loc_803A3D04
+.text:803A3C4C
+.text:803A3C4C loc_803A3C4C:                           @ CODE XREF: bus_add_device+15C↓j
+.text:803A3C4C                 LDR             R0, [R3,#0x48]
+.text:803A3C50                 ADD             R0, R0, #0xC
+.text:803A3C54                 BL              kobject_put
+.text:803A3C58                 MOV             R0, R7
+.text:803A3C5C                 LDMFD           SP!, {R4-R8,PC}
+.text:803A3C60 @ ---------------------------------------------------------------------------
+.text:803A3C60
+.text:803A3C60 loc_803A3C60:                           @ CODE XREF: bus_add_device+30↑j
+.text:803A3C60                                         @ bus_add_device+44↑j ...
+.text:803A3C60                 LDR             R1, [R6,#0x14]
+.text:803A3C64                 MOV             R0, R5
+.text:803A3C68                 BL              device_add_groups
+.text:803A3C6C                 SUBS            R7, R0, #0
+.text:803A3C70                 BNE             loc_803A3CEC
+.text:803A3C74                 LDR             R3, [R6,#0x48]
+.text:803A3C78                 ADD             R4, R5, #8
+.text:803A3C7C                 LDR             R2, [R5,#0x2C]
+.text:803A3C80                 MOV             R1, R4
+.text:803A3C84                 CMP             R2, #0
+.text:803A3C88                 LDR             R0, [R3,#0x34]
+.text:803A3C8C                 LDREQ           R2, [R5,#8]
+.text:803A3C90                 ADD             R0, R0, #0xC
+.text:803A3C94                 BL              sysfs_create_link
+.text:803A3C98                 SUBS            R7, R0, #0
+.text:803A3C9C                 BNE             loc_803A3CE0
+.text:803A3CA0                 LDR             R3, [R5,#0x4C]
+.text:803A3CA4                 MOV             R2, #0xFA34
+.text:803A3CA8                 MOV             R0, R4
+.text:803A3CAC                 MOVT            R2, #0x80BA
+.text:803A3CB0                 LDR             R1, [R3,#0x48]
+.text:803A3CB4                 ADD             R1, R1, #0xC
+.text:803A3CB8                 BL              sysfs_create_link
+.text:803A3CBC                 SUBS            R7, R0, #0
+.text:803A3CC0                 BEQ             loc_803A3D14
+.text:803A3CC4                 LDR             R3, [R6,#0x48]
+.text:803A3CC8                 LDR             R1, [R5,#0x2C]
+.text:803A3CCC                 LDR             R0, [R3,#0x34]
+.text:803A3CD0                 CMP             R1, #0
+.text:803A3CD4                 ADD             R0, R0, #0xC
+.text:803A3CD8                 LDREQ           R1, [R5,#8]
+.text:803A3CDC                 BL              sysfs_remove_link
+.text:803A3CE0
+.text:803A3CE0 loc_803A3CE0:                           @ CODE XREF: bus_add_device+F8↑j
+.text:803A3CE0                 LDR             R1, [R6,#0x14]
+.text:803A3CE4                 MOV             R0, R5
+.text:803A3CE8                 BL              device_remove_groups
+.text:803A3CEC
+.text:803A3CEC loc_803A3CEC:                           @ CODE XREF: bus_add_device+CC↑j
+.text:803A3CEC                 MOV             R0, R6
+.text:803A3CF0                 MOV             R1, R5
+.text:803A3CF4                 BL              device_remove_attrs_0
+.text:803A3CF8                 LDR             R3, [R5,#0x4C]
+.text:803A3CFC                 CMP             R3, #0
+.text:803A3D00                 BNE             loc_803A3C4C
+.text:803A3D04
+.text:803A3D04 loc_803A3D04:                           @ CODE XREF: bus_add_device+A4↑j
+.text:803A3D04                 MOV             R0, R7
+.text:803A3D08                 LDMFD           SP!, {R4-R8,PC}
+.text:803A3D0C @ ---------------------------------------------------------------------------
+.text:803A3D0C
+.text:803A3D0C loc_803A3D0C:                           @ CODE XREF: bus_add_device+C↑j
+.text:803A3D0C                 MOV             R0, R6
+.text:803A3D10                 LDMFD           SP!, {R4-R8,PC}
+.text:803A3D14 @ ---------------------------------------------------------------------------
+.text:803A3D14
+.text:803A3D14 loc_803A3D14:                           @ CODE XREF: bus_add_device+11C↑j
+.text:803A3D14                 LDR             R1, [R6,#0x48]
+.text:803A3D18                 LDR             R0, [R5,#4]
+.text:803A3D1C                 ADD             R1, R1, #0x5C
+.text:803A3D20                 ADD             R0, R0, #0x34
+.text:803A3D24                 BL              klist_add_tail
+.text:803A3D28                 MOV             R0, R7
+.text:803A3D2C                 LDMFD           SP!, {R4-R8,PC}
+.text:803A3D2C @ End of function bus_add_device
+.text:803A3D2C
+.text:803A3D30
+.text:803A3D30 @ =============== S U B R O U T I N E =======================================
+.text:803A3D30
+.text:803A3D30
+.text:803A3D30                 .globl bus_probe_device
+.text:803A3D30 bus_probe_device:                       @ CODE XREF: device_add+36C↑p
+.text:803A3D30                                         @ deferred_probe_work_func+60↓p
+.text:803A3D30                 STMFD           SP!, {R4-R6,LR}
+.text:803A3D34                 LDR             R6, [R0,#0x4C]
+.text:803A3D38                 CMP             R6, #0
+.text:803A3D3C                 LDMFDEQ         SP!, {R4-R6,PC}
+.text:803A3D40                 LDR             R3, [R6,#0x48]
+.text:803A3D44                 MOV             R5, R0
+.text:803A3D48                 LDRB            R2, [R3,#0xA0]
+.text:803A3D4C                 TST             R2, #1
+.text:803A3D50                 BNE             loc_803A3DB0
+.text:803A3D54
+.text:803A3D54 loc_803A3D54:                           @ CODE XREF: bus_probe_device+90↓j
+.text:803A3D54                 ADD             R0, R3, #0x40
+.text:803A3D58                 BL              mutex_lock
+.text:803A3D5C                 LDR             R2, [R6,#0x48]
+.text:803A3D60                 MOV             R3, R2
+.text:803A3D64                 LDR             R4, [R3,#0x38]!
+.text:803A3D68                 CMP             R4, R3
+.text:803A3D6C                 SUB             R4, R4, #8
+.text:803A3D70                 BEQ             loc_803A3DA4
+.text:803A3D74
+.text:803A3D74 loc_803A3D74:                           @ CODE XREF: bus_probe_device+70↓j
+.text:803A3D74                 LDR             R3, [R4,#0x10]
+.text:803A3D78                 MOV             R1, R4
+.text:803A3D7C                 MOV             R0, R5
+.text:803A3D80                 CMP             R3, #0
+.text:803A3D84                 BEQ             loc_803A3D90
+.text:803A3D88                 BLX             R3
+.text:803A3D8C                 LDR             R2, [R6,#0x48]
+.text:803A3D90
+.text:803A3D90 loc_803A3D90:                           @ CODE XREF: bus_probe_device+54↑j
+.text:803A3D90                 LDR             R4, [R4,#8]
+.text:803A3D94                 ADD             R3, R2, #0x38
+.text:803A3D98                 CMP             R4, R3
+.text:803A3D9C                 SUB             R4, R4, #8
+.text:803A3DA0                 BNE             loc_803A3D74
+.text:803A3DA4
+.text:803A3DA4 loc_803A3DA4:                           @ CODE XREF: bus_probe_device+40↑j
+.text:803A3DA4                 ADD             R0, R2, #0x40
+.text:803A3DA8                 LDMFD           SP!, {R4-R6,LR}
+.text:803A3DAC                 B               mutex_unlock
+.text:803A3DB0 @ ---------------------------------------------------------------------------
+.text:803A3DB0
+.text:803A3DB0 loc_803A3DB0:                           @ CODE XREF: bus_probe_device+20↑j
+.text:803A3DB0                 BL              device_attach
+.text:803A3DB4                 CMP             R0, #0
+.text:803A3DB8                 BLT             loc_803A3DC4
+.text:803A3DBC
+.text:803A3DBC loc_803A3DBC:                           @ CODE XREF: bus_probe_device+A4↓j
+.text:803A3DBC                 LDR             R3, [R6,#0x48]
+.text:803A3DC0                 B               loc_803A3D54
+.text:803A3DC4 @ ---------------------------------------------------------------------------
+.text:803A3DC4
+.text:803A3DC4 loc_803A3DC4:                           @ CODE XREF: bus_probe_device+88↑j
+.text:803A3DC4                 MOV             R0, #0xFBB8
+.text:803A3DC8                 MOV             R1, #0x22F
+.text:803A3DCC                 MOVT            R0, #0x80BA
+.text:803A3DD0                 BL              warn_slowpath_null
+.text:803A3DD4                 B               loc_803A3DBC
+.text:803A3DD4 @ End of function bus_probe_device
+.text:803A3DD4
+.text:803A3DD8
+.text:803A3DD8 @ =============== S U B R O U T I N E =======================================
+.text:803A3DD8
+.text:803A3DD8
+.text:803A3DD8                 .globl bus_remove_device
+.text:803A3DD8 bus_remove_device:                      @ CODE XREF: device_del+108↑p
+.text:803A3DD8                                         @ device_add+528↑p
+.text:803A3DD8
+.text:803A3DD8 @ FUNCTION CHUNK AT .text:802B2064 SIZE 00000028 BYTES
+.text:803A3DD8
+.text:803A3DD8                 STMFD           SP!, {R4-R6,LR}
+.text:803A3DDC                 LDR             R6, [R0,#0x4C]
+.text:803A3DE0                 CMP             R6, #0
+.text:803A3DE4                 LDMFDEQ         SP!, {R4-R6,PC}
+.text:803A3DE8                 MOV             R5, R0
+.text:803A3DEC                 LDR             R0, [R6,#0x48]
+.text:803A3DF0                 ADD             R0, R0, #0x40
+.text:803A3DF4                 BL              mutex_lock
+.text:803A3DF8                 LDR             R2, [R6,#0x48]
+.text:803A3DFC                 MOV             R3, R2
+.text:803A3E00                 LDR             R4, [R3,#0x38]!
+.text:803A3E04                 CMP             R3, R4
+.text:803A3E08                 SUB             R4, R4, #8
+.text:803A3E0C                 BEQ             loc_803A3E40
+.text:803A3E10
+.text:803A3E10 loc_803A3E10:                           @ CODE XREF: bus_remove_device+64↓j
+.text:803A3E10                 LDR             R3, [R4,#0x14]
+.text:803A3E14                 MOV             R1, R4
+.text:803A3E18                 MOV             R0, R5
+.text:803A3E1C                 CMP             R3, #0
+.text:803A3E20                 BEQ             loc_803A3E2C
+.text:803A3E24                 BLX             R3
+.text:803A3E28                 LDR             R2, [R6,#0x48]
+.text:803A3E2C
+.text:803A3E2C loc_803A3E2C:                           @ CODE XREF: bus_remove_device+48↑j
+.text:803A3E2C                 LDR             R4, [R4,#8]
+.text:803A3E30                 ADD             R3, R2, #0x38
+.text:803A3E34                 CMP             R4, R3
+.text:803A3E38                 SUB             R4, R4, #8
+.text:803A3E3C                 BNE             loc_803A3E10
+.text:803A3E40
+.text:803A3E40 loc_803A3E40:                           @ CODE XREF: bus_remove_device+34↑j
+.text:803A3E40                 ADD             R0, R2, #0x40
+.text:803A3E44                 BL              mutex_unlock
+.text:803A3E48                 MOV             R1, #0x80BAFA34
+.text:803A3E50                 ADD             R0, R5, #8
+.text:803A3E54                 BL              sysfs_remove_link
+.text:803A3E58                 LDR             R3, [R5,#0x4C]
+.text:803A3E5C                 LDR             R1, [R5,#0x2C]
+.text:803A3E60                 LDR             R3, [R3,#0x48]
+.text:803A3E64                 CMP             R1, #0
+.text:803A3E68                 LDREQ           R1, [R5,#8]
+.text:803A3E6C                 LDR             R0, [R3,#0x34]
+.text:803A3E70                 ADD             R0, R0, #0xC
+.text:803A3E74                 BL              sysfs_remove_link
+.text:803A3E78                 MOV             R1, R5
+.text:803A3E7C                 LDR             R0, [R5,#0x4C]
+.text:803A3E80                 BL              device_remove_attrs_0
+.text:803A3E84                 LDR             R3, [R5,#0x4C]
+.text:803A3E88                 MOV             R0, R5
+.text:803A3E8C                 LDR             R1, [R3,#0x14]
+.text:803A3E90                 BL              device_remove_groups
+.text:803A3E94                 LDR             R0, [R5,#4]
+.text:803A3E98                 ADD             R0, R0, #0x34
+.text:803A3E9C                 BL              klist_node_attached
+.text:803A3EA0                 CMP             R0, #0
+.text:803A3EA4                 BNE             loc_803A3ECC
+.text:803A3EA8
+.text:803A3EA8 loc_803A3EA8:                           @ CODE XREF: bus_remove_device+100↓j
+.text:803A3EA8                 MOV             R0, R5
+.text:803A3EAC                 BL              device_release_driver
+.text:803A3EB0                 LDR             R3, [R5,#0x4C]
+.text:803A3EB4                 CMP             R3, #0
+.text:803A3EB8                 LDMFDEQ         SP!, {R4-R6,PC}
+.text:803A3EBC                 LDR             R0, [R3,#0x48]
+.text:803A3EC0                 LDMFD           SP!, {R4-R6,LR}
+.text:803A3EC4                 ADD             R0, R0, #0xC
+.text:803A3EC8                 B               kobject_put
+.text:803A3ECC @ ---------------------------------------------------------------------------
+.text:803A3ECC
+.text:803A3ECC loc_803A3ECC:                           @ CODE XREF: bus_remove_device+CC↑j
+.text:803A3ECC                 LDR             R0, [R5,#4]
+.text:803A3ED0                 ADD             R0, R0, #0x34
+.text:803A3ED4                 BL              klist_del
+.text:803A3ED8                 B               loc_803A3EA8
+.text:803A3ED8 @ End of function bus_remove_device
+.text:803A3ED8
+.text:803A3EDC
+.text:803A3EDC @ =============== S U B R O U T I N E =======================================
+.text:803A3EDC
+.text:803A3EDC
+.text:803A3EDC                 .globl bus_add_driver
+.text:803A3EDC bus_add_driver:                         @ CODE XREF: driver_register+74↓p
+.text:803A3EDC
+.text:803A3EDC var_20          = -0x20
+.text:803A3EDC
+.text:803A3EDC                 STMFD           SP!, {R4-R7,LR}
+.text:803A3EE0                 SUB             SP, SP, #0xC
+.text:803A3EE4                 LDR             R7, [R0,#4] @
+.text:803A3EE4                                         @ r0 = 0x80d48610
+.text:803A3EE4                                         @ r7 = 0x80d5e028
+.text:803A3EE8                 CMP             R7, #0
+.text:803A3EEC                 MOVEQ           R0, #0xFFFFFFEA
+.text:803A3EF0                 BEQ             loc_803A3F9C
+.text:803A3EF4                 MOV             R4, R0  @
+.text:803A3EF4                                         @ r4 = 0x80d48610
+.text:803A3EF8                 LDR             R0, [R7,#0x48] @
+.text:803A3EF8                                         @ r0 = 0x88030900
+.text:803A3EFC                 CMP             R0, #0
+.text:803A3F00                 BEQ             loc_803A3F0C
+.text:803A3F04                 ADD             R0, R0, #0xC @
+.text:803A3F04                                         @ r0 = 0x8803090C
+.text:803A3F08                 BL              kobject_get
+.text:803A3F0C
+.text:803A3F0C loc_803A3F0C:                           @ CODE XREF: bus_add_driver+24↑j
+.text:803A3F0C                 MOV             R3, #0x3BF0
+.text:803A3F10                 MOV             R1, #0x80D0
+.text:803A3F14                 MOVT            R3, #0x80E0
+.text:803A3F18                 LDR             R0, [R3,#(dword_80E03C0C - 0x80E03BF0)]
+.text:803A3F1C                 BL              kmem_cache_alloc @ 内存管理
+.text:803A3F20                 SUBS            R5, R0, #0
+.text:803A3F24                 BEQ             loc_803A4014
+.text:803A3F28                 MOV             R2, #0
+.text:803A3F2C                 ADD             R0, R5, #0x24
+.text:803A3F30                 MOV             R1, R2
+.text:803A3F34                 BL              klist_init
+.text:803A3F38                 STR             R4, [R5,#0x4C]
+.text:803A3F3C                 STR             R5, [R4,#0x38]
+.text:803A3F40                 MOV             R3, #0x5044
+.text:803A3F44                 LDR             R12, [R7,#0x48]
+.text:803A3F48                 MOVT            R3, #0x80B7
+.text:803A3F4C                 MOV             R2, #0
+.text:803A3F50                 LDR             R1, =driver_ktype
+.text:803A3F54                 MOV             R0, R5
+.text:803A3F58                 LDR             R12, [R12,#0x58]
+.text:803A3F5C                 STR             R12, [R5,#0x10]
+.text:803A3F60                 LDR             R12, [R4]
+.text:803A3F64                 STR             R12, [SP,#0x20+var_20]
+.text:803A3F68                 BL              kobject_init_and_add
+.text:803A3F6C                 SUBS            R6, R0, #0
+.text:803A3F70                 BEQ             loc_803A3FA4
+.text:803A3F74
+.text:803A3F74 loc_803A3F74:                           @ CODE XREF: bus_add_driver+14C↓j
+.text:803A3F74                 MOV             R0, R5
+.text:803A3F78                 BL              kobject_put
+.text:803A3F7C                 LDR             R0, [R4,#0x38]
+.text:803A3F80                 BL              kfree   @ 释放内存
+.text:803A3F84                 MOV             R3, #0
+.text:803A3F88                 STR             R3, [R4,#0x38]
+.text:803A3F8C
+.text:803A3F8C loc_803A3F8C:                           @ CODE XREF: bus_add_driver+13C↓j
+.text:803A3F8C                 LDR             R0, [R7,#0x48]
+.text:803A3F90                 ADD             R0, R0, #0xC
+.text:803A3F94                 BL              kobject_put
+.text:803A3F98                 MOV             R0, R6
+.text:803A3F9C
+.text:803A3F9C loc_803A3F9C:                           @ CODE XREF: bus_add_driver+14↑j
+.text:803A3F9C                 ADD             SP, SP, #0xC
+.text:803A3FA0                 LDMFD           SP!, {R4-R7,PC}
+.text:803A3FA4 @ ---------------------------------------------------------------------------
+.text:803A3FA4
+.text:803A3FA4 loc_803A3FA4:                           @ CODE XREF: bus_add_driver+94↑j
+.text:803A3FA4                 LDR             R1, [R7,#0x48]
+.text:803A3FA8                 ADD             R0, R5, #0x38
+.text:803A3FAC                 ADD             R1, R1, #0x70
+.text:803A3FB0                 BL              klist_add_tail
+.text:803A3FB4                 LDR             R3, [R4,#4]
+.text:803A3FB8                 LDR             R3, [R3,#0x48]
+.text:803A3FBC                 LDRB            R3, [R3,#0xA0]
+.text:803A3FC0                 TST             R3, #1
+.text:803A3FC4                 BNE             loc_803A401C
+.text:803A3FC8
+.text:803A3FC8 loc_803A3FC8:                           @ CODE XREF: bus_add_driver+150↓j
+.text:803A3FC8                 MOV             R1, R4
+.text:803A3FCC                 LDR             R0, [R4,#8]
+.text:803A3FD0                 BL              module_add_driver
+.text:803A3FD4                 LDR             R1, =driver_attr_uevent
+.text:803A3FD8                 MOV             R0, R4
+.text:803A3FDC                 BL              driver_create_file
+.text:803A3FE0                 CMP             R0, #0
+.text:803A3FE4                 BNE             loc_803A4084
+.text:803A3FE8
+.text:803A3FE8 loc_803A3FE8:                           @ CODE XREF: bus_add_driver+1C0↓j
+.text:803A3FE8                 LDR             R1, [R7,#0x18]
+.text:803A3FEC                 MOV             R0, R4
+.text:803A3FF0                 BL              driver_add_groups
+.text:803A3FF4                 CMP             R0, #0
+.text:803A3FF8                 BNE             loc_803A40A0
+.text:803A3FFC
+.text:803A3FFC loc_803A3FFC:                           @ CODE XREF: bus_add_driver+1DC↓j
+.text:803A3FFC                 LDRB            R3, [R4,#0x10]
+.text:803A4000                 CMP             R3, #0
+.text:803A4004                 BEQ             loc_803A4030
+.text:803A4008
+.text:803A4008 loc_803A4008:                           @ CODE XREF: bus_add_driver+180↓j
+.text:803A4008                                         @ bus_add_driver+194↓j
+.text:803A4008                 MOV             R0, #0
+.text:803A400C                 ADD             SP, SP, #0xC
+.text:803A4010                 LDMFD           SP!, {R4-R7,PC}
+.text:803A4014 @ ---------------------------------------------------------------------------
+.text:803A4014
+.text:803A4014 loc_803A4014:                           @ CODE XREF: bus_add_driver+48↑j
+.text:803A4014                 MOV             R6, #0xFFFFFFF4
+.text:803A4018                 B               loc_803A3F8C
+.text:803A401C @ ---------------------------------------------------------------------------
+.text:803A401C
+.text:803A401C loc_803A401C:                           @ CODE XREF: bus_add_driver+E8↑j
+.text:803A401C                 MOV             R0, R4
+.text:803A4020                 BL              driver_attach
+.text:803A4024                 SUBS            R6, R0, #0
+.text:803A4028                 BNE             loc_803A3F74
+.text:803A402C                 B               loc_803A3FC8
+.text:803A4030 @ ---------------------------------------------------------------------------
+.text:803A4030
+.text:803A4030 loc_803A4030:                           @ CODE XREF: bus_add_driver+128↑j
+.text:803A4030                 LDR             R1, =driver_attr_unbind
+.text:803A4034                 MOV             R0, R4
+.text:803A4038                 BL              driver_create_file
+.text:803A403C                 CMP             R0, #0
+.text:803A4040                 BEQ             loc_803A4060
+.text:803A4044
+.text:803A4044 loc_803A4044:                           @ CODE XREF: bus_add_driver+1A4↓j
+.text:803A4044                 MOV             R1, #0xB0D8
+.text:803A4048                 MOV             R0, #0xFC14
+.text:803A404C                 LDR             R2, [R4]
+.text:803A4050                 MOVT            R1, #0x8099
+.text:803A4054                 MOVT            R0, #0x80BA
+.text:803A4058                 BL              printk
+.text:803A405C                 B               loc_803A4008
+.text:803A4060 @ ---------------------------------------------------------------------------
+.text:803A4060
+.text:803A4060 loc_803A4060:                           @ CODE XREF: bus_add_driver+164↑j
+.text:803A4060                 LDR             R1, =driver_attr_bind
+.text:803A4064                 MOV             R0, R4
+.text:803A4068                 BL              driver_create_file
+.text:803A406C                 CMP             R0, #0
+.text:803A4070                 BEQ             loc_803A4008
+.text:803A4074                 LDR             R1, =driver_attr_unbind
+.text:803A4078                 MOV             R0, R4
+.text:803A407C                 BL              driver_remove_file
+.text:803A4080                 B               loc_803A4044
+.text:803A4084 @ ---------------------------------------------------------------------------
+.text:803A4084
+.text:803A4084 loc_803A4084:                           @ CODE XREF: bus_add_driver+108↑j
+.text:803A4084                 MOV             R1, #0xB0D8
+.text:803A4088                 MOV             R0, #0xFBCC
+.text:803A408C                 MOVT            R1, #0x8099
+.text:803A4090                 LDR             R2, [R4]
+.text:803A4094                 MOVT            R0, #0x80BA
+.text:803A4098                 BL              printk
+.text:803A409C                 B               loc_803A3FE8
+.text:803A40A0 @ ---------------------------------------------------------------------------
+.text:803A40A0
+.text:803A40A0 loc_803A40A0:                           @ CODE XREF: bus_add_driver+11C↑j
+.text:803A40A0                 MOV             R1, #0xB0D8
+.text:803A40A4                 MOV             R0, #0xFBEC
+.text:803A40A8                 MOVT            R1, #0x8099
+.text:803A40AC                 LDR             R2, [R4]
+.text:803A40B0                 MOVT            R0, #0x80BA
+.text:803A40B4                 BL              printk
+.text:803A40B8                 B               loc_803A3FFC
+.text:803A40B8 @ End of function bus_add_driver
+.text:803A40B8
+.text:803A40B8 @ ---------------------------------------------------------------------------
+.text:803A40BC off_803A40BC:   .long driver_ktype      @ DATA XREF: bus_add_driver+74↑r
+.text:803A40C0 off_803A40C0:   .long driver_attr_uevent
+.text:803A40C0                                         @ DATA XREF: bus_add_driver+F8↑r
+.text:803A40C4 off_803A40C4:   .long driver_attr_unbind
+.text:803A40C4                                         @ DATA XREF: bus_add_driver:loc_803A4030↑r
+.text:803A40C4                                         @ bus_add_driver+198↑r
+.text:803A40C8 off_803A40C8:   .long driver_attr_bind  @ DATA XREF: bus_add_driver:loc_803A4060↑r
+.text:803A40CC
